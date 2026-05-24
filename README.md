@@ -53,6 +53,14 @@
 
 **ECOFlow** is a comprehensive **Engineering Change Order (ECO) Management System** designed for manufacturing and product engineering teams. It provides a structured workflow for managing product changes, BOM modifications, and multi-stage approval processes—all in one platform.
 
+### Live Deployment
+
+- **Frontend**: https://eco-flow-engineering-change-order-v.vercel.app/login
+- **Backend API**: https://ecoflow-engineering-change-order-version.onrender.com/api
+- **Health Check**: https://ecoflow-engineering-change-order-version.onrender.com/health
+- **Postman Docs**: https://documenter.getpostman.com/view/39188593/2sBXwjxEgP
+- **Postman Collection**: [`ECOFlow.postman_collection.json`](./ECOFlow.postman_collection.json)
+
 ### Why ECOFlow?
 
 - ⚡ **Eliminate Manual Workflows**: Automate ECO creation, submission, and approval tracking
@@ -495,10 +503,18 @@ Create a `.env` file in the `frontend/` directory:
 ```env
 # API Configuration
 VITE_API_BASE_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5000/api
 
 # Optional: Feature Flags
 VITE_ENABLE_ANALYTICS=false
 VITE_ENABLE_DEBUG=true
+```
+
+For production builds, `frontend/.env.production` points to:
+
+```env
+VITE_API_BASE_URL=https://ecoflow-engineering-change-order-version.onrender.com/api
+VITE_API_URL=https://ecoflow-engineering-change-order-version.onrender.com/api
 ```
 
 ### Getting Cloudinary Credentials
@@ -514,9 +530,33 @@ VITE_ENABLE_DEBUG=true
 
 ### Base URL
 
+Production:
+
+```
+https://ecoflow-engineering-change-order-version.onrender.com/api
+```
+
+Local development:
+
 ```
 http://localhost:5000/api
 ```
+
+### Postman Collection
+
+Published API docs are available at:
+
+```
+https://documenter.getpostman.com/view/39188593/2sBXwjxEgP
+```
+
+Import [`ECOFlow.postman_collection.json`](./ECOFlow.postman_collection.json) into Postman to generate ready-to-run API docs and requests. The collection uses these variables:
+
+- `baseUrl`: defaults to the deployed Render backend API
+- `frontendUrl`: deployed Vercel frontend URL
+- `token`: automatically set after a successful login request
+- `refreshToken`: automatically set after login
+- `productId`, `productVersionId`, `bomId`, `ecoId`, `userId`, and related IDs: replace with IDs returned by your API responses
 
 ### Authentication
 
@@ -541,7 +581,7 @@ Authorization: Bearer <your-jwt-token>
 <tr><td colspan="4"><strong>🔐 Authentication</strong></td></tr>
 <tr>
 <td><code>POST</code></td>
-<td><code>/auth/register</code></td>
+<td><code>/auth/signup</code></td>
 <td>Register new user</td>
 <td>No</td>
 </tr>
@@ -556,6 +596,18 @@ Authorization: Bearer <your-jwt-token>
 <td><code>/auth/me</code></td>
 <td>Get current user profile</td>
 <td>Yes</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/refresh</code></td>
+<td>Refresh access token</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/auth/logout</code></td>
+<td>Logout and revoke refresh token</td>
+<td>No</td>
 </tr>
 
 <tr><td colspan="4"><strong>📦 Products</strong></td></tr>
@@ -699,8 +751,14 @@ Authorization: Bearer <your-jwt-token>
 </tr>
 <tr>
 <td><code>POST</code></td>
-<td><code>/roles/:id/assign</code></td>
-<td>Assign roles to user (ADMIN only)</td>
+<td><code>/roles/users/:id/roles</code></td>
+<td>Add a role to a user (ADMIN only)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>/roles/users/:id/roles</code></td>
+<td>Assign multiple roles to a user (ADMIN only)</td>
 <td>Yes</td>
 </tr>
 
@@ -718,7 +776,7 @@ Authorization: Bearer <your-jwt-token>
 <td>Yes</td>
 </tr>
 <tr>
-<td><code>PUT</code></td>
+<td><code>PATCH</code></td>
 <td><code>/notifications/:id/read</code></td>
 <td>Mark notification as read</td>
 <td>Yes</td>
@@ -727,14 +785,14 @@ Authorization: Bearer <your-jwt-token>
 <tr><td colspan="4"><strong>📊 Reports & Comparison</strong></td></tr>
 <tr>
 <td><code>GET</code></td>
-<td><code>/reports/summary</code></td>
-<td>Get dashboard summary statistics</td>
+<td><code>/reports/eco-stats</code></td>
+<td>Get dashboard ECO statistics</td>
 <td>Yes</td>
 </tr>
 <tr>
-<td><code>POST</code></td>
-<td><code>/comparison/bom</code></td>
-<td>Compare two BOM versions</td>
+<td><code>GET</code></td>
+<td><code>/comparison/ecos/:id/comparison</code></td>
+<td>Compare an ECO against current product/BOM data</td>
 <td>Yes</td>
 </tr>
 </tbody>
@@ -744,12 +802,12 @@ Authorization: Bearer <your-jwt-token>
 
 ```bash
 # Login
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST https://ecoflow-engineering-change-order-version.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@ecoflow.com","password":"password123"}'
 
 # Get all ECOs (with token)
-curl -X GET http://localhost:5000/api/ecos \
+curl -X GET https://ecoflow-engineering-change-order-version.onrender.com/api/ecos \
   -H "Authorization: Bearer <your-jwt-token>"
 ```
 
@@ -946,8 +1004,23 @@ cd frontend
 vercel --prod
 ```
 
+**Vercel Project Settings:**
+
+- **Framework Preset**: Vite
+- **Root Directory**: `frontend`
+- **Install Command**: `npm install`
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+
 **Environment Variables to Set:**
-- `VITE_API_BASE_URL`: Your backend production URL
+- `VITE_API_BASE_URL`: `https://ecoflow-engineering-change-order-version.onrender.com/api`
+- `VITE_API_URL`: `https://ecoflow-engineering-change-order-version.onrender.com/api`
+
+Current production frontend:
+
+```
+https://eco-flow-engineering-change-order-v.vercel.app/login
+```
 
 #### Netlify
 
@@ -1040,6 +1113,7 @@ railway variables
 
 3. **Update CORS Origins**
    - Add production frontend URL to `ALLOWED_ORIGINS` in backend `.env`
+   - Current frontend origin: `https://eco-flow-engineering-change-order-v.vercel.app`
 
 4. **Test Authentication**
    - Verify JWT token generation

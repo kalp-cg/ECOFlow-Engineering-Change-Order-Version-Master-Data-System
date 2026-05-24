@@ -1,0 +1,2206 @@
+{
+  "info": {
+    "_postman_id": "3f9d6ed2-6d71-4a3f-a6af-ecoflow000001",
+    "name": "ECOFlow API",
+    "description": "Postman collection for ECOFlow Engineering Change Order Version Master Data System. Import this JSON into Postman to create API documentation and ready-to-run requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": []
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": []
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://ecoflow-engineering-change-order-version.onrender.com/api"
+    },
+    {
+      "key": "frontendUrl",
+      "value": "https://eco-flow-engineering-change-order-v.vercel.app"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "email",
+      "value": "admin@ecoflow.com"
+    },
+    {
+      "key": "password",
+      "value": "password123"
+    },
+    {
+      "key": "productId",
+      "value": "replace-with-product-id"
+    },
+    {
+      "key": "productVersionId",
+      "value": "replace-with-product-version-id"
+    },
+    {
+      "key": "bomId",
+      "value": "replace-with-bom-id"
+    },
+    {
+      "key": "componentProductId",
+      "value": "replace-with-component-product-id"
+    },
+    {
+      "key": "componentId",
+      "value": "replace-with-component-id"
+    },
+    {
+      "key": "operationId",
+      "value": "replace-with-operation-id"
+    },
+    {
+      "key": "ecoId",
+      "value": "replace-with-eco-id"
+    },
+    {
+      "key": "draftId",
+      "value": "replace-with-draft-id"
+    },
+    {
+      "key": "operationDraftId",
+      "value": "replace-with-operation-draft-id"
+    },
+    {
+      "key": "userId",
+      "value": "replace-with-user-id"
+    },
+    {
+      "key": "stageId",
+      "value": "replace-with-stage-id"
+    },
+    {
+      "key": "notificationId",
+      "value": "replace-with-notification-id"
+    },
+    {
+      "key": "roleRequestId",
+      "value": "replace-with-role-request-id"
+    },
+    {
+      "key": "attachmentId",
+      "value": "replace-with-attachment-id"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "API Root",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://ecoflow-engineering-change-order-version.onrender.com",
+              "protocol": "https",
+              "host": [
+                "ecoflow-engineering-change-order-version",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Checks the backend root endpoint."
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://ecoflow-engineering-change-order-version.onrender.com/health",
+              "protocol": "https",
+              "host": [
+                "ecoflow-engineering-change-order-version",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Checks backend uptime and deployment health."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Demo User\",\n  \"email\": \"demo.user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "signup"
+              ]
+            },
+            "description": "Creates a new pending user account."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.accessToken) pm.collectionVariables.set('token', json.data.accessToken);",
+                  "if (json.data && json.data.refreshToken) pm.collectionVariables.set('refreshToken', json.data.refreshToken);",
+                  "if (json.data && json.data.user && json.data.user.id) pm.collectionVariables.set('userId', json.data.user.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Logs in and stores accessToken, refreshToken, and userId in collection variables."
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"password123\",\n  \"newPassword\": \"password1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "change-password"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Demo User",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "demo.user@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?page=1&limit=10&archived=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "archived",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Demo Product\",\n  \"salePrice\": 1999.99,\n  \"costPrice\": 1200\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Demo Product\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Product Version",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}",
+                "versions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Product Version",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salePrice\": 2199.99,\n  \"costPrice\": 1300,\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/versions/{{productVersionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "versions",
+                "{{productVersionId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Archive Product",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/archive?cascadeArchive=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}",
+                "archive"
+              ],
+              "query": [
+                {
+                  "key": "cascadeArchive",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "BOMs",
+      "item": [
+        {
+          "name": "List BOMs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boms?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "productId",
+                  "value": "{{productId}}",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create BOM",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productVersionId\": \"{{productVersionId}}\",\n  \"version\": \"v1.0\",\n  \"components\": [\n    {\n      \"productId\": \"{{componentProductId}}\",\n      \"quantity\": 2\n    }\n  ],\n  \"operations\": [\n    {\n      \"name\": \"Assembly\",\n      \"time\": 45,\n      \"workCenter\": \"WC-100\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/boms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get BOM",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boms/{{bomId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms",
+                "{{bomId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update BOM",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": \"v1.1\",\n  \"status\": \"DRAFT\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/boms/{{bomId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms",
+                "{{bomId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Publish BOM",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boms/{{bomId}}/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms",
+                "{{bomId}}",
+                "publish"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add BOM Component",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{componentProductId}}\",\n  \"quantity\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/boms/{{bomId}}/components",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms",
+                "{{bomId}}",
+                "components"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remove BOM Component",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boms/{{bomId}}/components/{{componentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms",
+                "{{bomId}}",
+                "components",
+                "{{componentId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add BOM Operation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Inspection\",\n  \"time\": 15,\n  \"workCenter\": \"QC-10\",\n  \"sequence\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/boms/{{bomId}}/operations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms",
+                "{{bomId}}",
+                "operations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remove BOM Operation",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boms/{{bomId}}/operations/{{operationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boms",
+                "{{bomId}}",
+                "operations",
+                "{{operationId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "ECOs",
+      "item": [
+        {
+          "name": "List ECOs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ecos?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "DRAFT",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "BOM",
+                  "disabled": true
+                },
+                {
+                  "key": "productId",
+                  "value": "{{productId}}",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Product ECO",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Update product pricing\",\n  \"type\": \"PRODUCT\",\n  \"productId\": \"{{productId}}\",\n  \"draftData\": {\n    \"product\": {\n      \"salePrice\": 2499.99,\n      \"costPrice\": 1500\n    }\n  },\n  \"effectiveDate\": \"2026-06-01T00:00:00.000Z\",\n  \"versionUpdate\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create BOM ECO",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Modify BOM components\",\n  \"type\": \"BOM\",\n  \"productId\": \"{{productId}}\",\n  \"bomId\": \"{{bomId}}\",\n  \"draftData\": {},\n  \"effectiveDate\": \"2026-06-01T00:00:00.000Z\",\n  \"versionUpdate\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get ECO",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update ECO",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated ECO title\",\n  \"draftData\": {\n    \"product\": {\n      \"salePrice\": 2599.99\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit ECO",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Review ECO",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approved\": true,\n  \"comments\": \"Approved from Postman\",\n  \"fullApproval\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "review"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Apply ECO",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/apply",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "apply"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add ECO Component Draft",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{componentProductId}}\",\n  \"quantity\": 5,\n  \"changeType\": \"ADDED\",\n  \"originalComponentId\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/draft/components",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "draft",
+                "components"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update ECO Component Draft",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 6,\n  \"changeType\": \"MODIFIED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/draft/components/{{draftId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "draft",
+                "components",
+                "{{draftId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete ECO Component Draft",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/draft/components/{{draftId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "draft",
+                "components",
+                "{{draftId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add ECO Operation Draft",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rework\",\n  \"time\": 30,\n  \"workCenter\": \"RW-20\",\n  \"sequence\": 3,\n  \"changeType\": \"ADDED\",\n  \"originalOperationId\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/draft/operations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "draft",
+                "operations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update ECO Operation Draft",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Rework\",\n  \"time\": 35,\n  \"workCenter\": \"RW-20\",\n  \"sequence\": 3,\n  \"changeType\": \"MODIFIED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/draft/operations/{{operationDraftId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "draft",
+                "operations",
+                "{{operationDraftId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete ECO Operation Draft",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/draft/operations/{{operationDraftId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "draft",
+                "operations",
+                "{{operationDraftId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users and Roles",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "role",
+                  "value": "ADMIN",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "ACTIVE",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated User\",\n  \"email\": \"updated.user@example.com\",\n  \"role\": \"ENGINEERING\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}",
+                "status"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reset User Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPassword\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}",
+                "password"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User Roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/users/{{userId}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "users",
+                "{{userId}}",
+                "roles"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Assign Roles",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roles\": [\"ENGINEERING\", \"APPROVER\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/roles/users/{{userId}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "users",
+                "{{userId}}",
+                "roles"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"OPERATIONS\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/roles/users/{{userId}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "users",
+                "{{userId}}",
+                "roles"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Remove Role",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"OPERATIONS\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/roles/users/{{userId}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "users",
+                "{{userId}}",
+                "roles"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Role Requests",
+      "item": [
+        {
+          "name": "Create Role Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestedRoles\": [\"ENGINEERING\"],\n  \"reason\": \"Need engineering access for ECO creation.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/role-requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-requests"
+              ]
+            }
+          }
+        },
+        {
+          "name": "My Role Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/role-requests/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-requests",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin List Role Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/role-requests/admin/all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-requests",
+                "admin",
+                "all"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PENDING",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Approve Role Request",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/role-requests/admin/{{roleRequestId}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-requests",
+                "admin",
+                "{{roleRequestId}}",
+                "approve"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reject Role Request",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/role-requests/admin/{{roleRequestId}}/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "role-requests",
+                "admin",
+                "{{roleRequestId}}",
+                "reject"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "item": [
+        {
+          "name": "List Approval Stages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/settings/stages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings",
+                "stages"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Approval Stage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/settings/stages/{{stageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings",
+                "stages",
+                "{{stageId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Approval Stage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Engineering Review\",\n  \"order\": 1,\n  \"requiresApproval\": true,\n  \"isFinal\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/settings/stages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings",
+                "stages"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Approval Stage",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Review\",\n  \"order\": 1,\n  \"requiresApproval\": true,\n  \"isFinal\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/settings/stages/{{stageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings",
+                "stages",
+                "{{stageId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Approval Stage",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/settings/stages/{{stageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings",
+                "stages",
+                "{{stageId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Next Stage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/settings/stages/next/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings",
+                "stages",
+                "next",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications?page=1&limit=20&unreadOnly=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "unreadOnly",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "SSE Notification Stream",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/stream",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "stream"
+              ]
+            },
+            "description": "Server-Sent Events stream. Postman can open this, but browser/client behavior is usually better for live testing."
+          }
+        },
+        {
+          "name": "Broadcast Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"STAGE_CHANGED\",\n  \"title\": \"System Notice\",\n  \"message\": \"Broadcast from Postman\",\n  \"data\": {\n    \"source\": \"postman\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/broadcast",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "broadcast"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Send Notification To User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"STAGE_CHANGED\",\n  \"title\": \"Direct Notice\",\n  \"message\": \"Direct message from Postman\",\n  \"data\": {\n    \"source\": \"postman\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "users",
+                "{{userId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notification Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "{{notificationId}}",
+                "read"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark All Notifications Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/read-all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "read-all"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{notificationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "{{notificationId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports and Comparison",
+      "item": [
+        {
+          "name": "Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/audit-logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "audit-logs"
+              ]
+            }
+          }
+        },
+        {
+          "name": "ECO Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/eco-stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "eco-stats"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Product Version History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/products/{{productId}}/version-history",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "products",
+                "{{productId}}",
+                "version-history"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BOM Change History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/product-versions/{{productVersionId}}/bom-history",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "product-versions",
+                "{{productVersionId}}",
+                "bom-history"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Archived Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/archived-products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "archived-products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Active Matrix",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/active-matrix",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "active-matrix"
+              ]
+            }
+          }
+        },
+        {
+          "name": "ECO Comparison",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comparison/ecos/{{ecoId}}/comparison",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comparison",
+                "ecos",
+                "{{ecoId}}",
+                "comparison"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Product Versions Comparison",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comparison/products/{{productId}}/versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comparison",
+                "products",
+                "{{productId}}",
+                "versions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BOM Version Comparison",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comparison/boms/{{bomId}}/comparison/v1.0/v2.0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comparison",
+                "boms",
+                "{{bomId}}",
+                "comparison",
+                "v1.0",
+                "v2.0"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Operations",
+      "item": [
+        {
+          "name": "Active Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/operations/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "operations",
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Active BOMs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/operations/boms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "operations",
+                "boms"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Active Product Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/operations/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "operations",
+                "products",
+                "{{productId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Active BOM Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/operations/boms/{{bomId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "operations",
+                "boms",
+                "{{bomId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Operations Active Matrix",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/operations/active-matrix",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "operations",
+                "active-matrix"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Attachments",
+      "item": [
+        {
+          "name": "Upload Product Attachment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productVersionId}}/attachments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productVersionId}}",
+                "attachments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product Attachments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productVersionId}}/attachments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productVersionId}}",
+                "attachments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Product Attachment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/attachments/{{attachmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "attachments",
+                "{{attachmentId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload ECO Attachment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/attachments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "attachments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get ECO Attachments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ecos/{{ecoId}}/attachments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "{{ecoId}}",
+                "attachments"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete ECO Attachment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ecos/attachments/{{attachmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ecos",
+                "attachments",
+                "{{attachmentId}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
